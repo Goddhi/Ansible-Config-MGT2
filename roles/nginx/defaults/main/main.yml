@@ -44,6 +44,10 @@ nginx_manage_repo: true
 # Default is nginx_repository.
 nginx_install_from: nginx_repository
 
+# Enable Nginx as a LoadBalancer
+enable_nginx_lb: false
+load_balancer_is_required: false
+
 # Specify source install options for NGINX Open Source.
 # Options represent whether to install from source also or to install from packages (default).
 # These only apply if 'nginx_install_from' is set to 'source'.
