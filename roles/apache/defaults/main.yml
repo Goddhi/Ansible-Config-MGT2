@@ -1,0 +1,7 @@
+---
+# defaults file for apache
+enable_apache_lb: false
+
+
+## Variable to check if the LoadBalancer is required
+load_balancer_is_required: false
