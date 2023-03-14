@@ -6,42 +6,41 @@ pipeline {
     }
 
     parameters {
-      string(name: 'inventory', defaultValue: 'dev', description: 'This is the inventory of the file for the environment to deploy configuration')
+      string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
     }
 
-    stages {
-        stage('Initial stage') {
+    stages{
+        stage("Initial cleanup") {
             steps {
                 dir("${WORKSPACE}") {
-                  deleteDir()
+                deleteDir()
                 }
             }
         }
 
-        stage("Checkout SCM") {
-            steps {
-                git branch: 'main', url 'https://github.com/Goddhi/Ansible-Config-MGT2.git'
+        stage('Checkout SCM') {
+            steps{
+                git branch: 'main', url: 'https://github.com/Goddhi/Ansible-Config-MGT2.git'
             }
         }
 
         stage('Prepare Ansible For Execution') {
-          steps {
-              sh 'echo ${WORKSPACE}'
-              sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'
-          }
-        }
-
-        stage('Run Annsible Playbook') {
             steps {
-                ansiblePlaybook credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible2', inventory: 'inventory/dev.yml', playbook: 'playbooks/site.yml'
+                sh 'echo ${WORKSPACE}' 
+                sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
             }
         }
 
-        stage('Clean Workspace after build') {
+        stage('Run Ansible playbook') {
             steps {
-                cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, clanWhenNotBuilt: true. deleteDirs: true)
+                ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/dev.yml', playbook: 'playbooks/site.yml'
+            }
+        }
+
+        stage('Clean Workspace after build'){
+            steps{
+                cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
             }
         }
     }
-   
 }
