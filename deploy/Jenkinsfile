@@ -1,45 +1,51 @@
 pipeline {
     agent any
 
-    environment {
-        ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
-    }
-
-    parameters {
-      string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
-    }
-
-    stages{
-        stage("Initial cleanup") {
+    stages {
+        stage('Initial Cleanup') {
             steps {
                 dir("${WORKSPACE}") {
-                deleteDir()
+                    deleteDir()
                 }
             }
         }
 
-        stage('Checkout SCM') {
-            steps{
-                git branch: 'main', url: 'https://github.com/Goddhi/Ansible-Config-MGT2.git'
-            }
-        }
-
-        stage('Prepare Ansible For Execution') {
+        stage('Build') {
             steps {
-                sh 'echo ${WORKSPACE}' 
-                sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
+                script {
+                    sh 'echo "Building stage"'
+                }
             }
         }
 
-        stage('Run Ansible playbook') {
+        stage('Test') {
             steps {
-                ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible2', inventory: 'inventory/dev.yml', playbook: 'playbooks/site.yml'
+                script {
+                    sh 'echo "Testing Stage" '
+                }
             }
         }
 
-        stage('Clean Workspace after build'){
-            steps{
-                cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
+        stage('Package') {
+            steps {
+                script {
+                    sh 'echo "Packaging Stage"'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'echo "Deployment Stage"'
+                }
+            }
+        }
+
+        stage('Final Clean Up') {
+            steps {
+                cleanWs()
+                
             }
         }
     }
