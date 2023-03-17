@@ -1,1 +1,4 @@
 /etc/ansible/home/ubuntu/Ansible-Config-MGT2/roles/geerlingguy.mysql
+
+
+ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, inventory: 'inventory/dev.yml', playbook: 'playbooks/site.yml'
