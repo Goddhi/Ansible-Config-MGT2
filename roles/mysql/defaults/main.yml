@@ -16,12 +16,15 @@ mysql_user_password_update: false
 
 mysql_enabled_on_startup: true
 
+
 # Whether my.cnf should be updated on every run.
 overwrite_global_mycnf: true
 
 # The following variables have a default value depending on operating system.
 # mysql_config_file: /etc/my.cnf
 # mysql_config_include_dir: /etc/my.cnf.d
+
+
 
 # Pass in a comma-separated list of repos to use (e.g. "remi,epel"). Used only
 # for RedHat systems (and derivatives).
@@ -106,18 +109,38 @@ mysql_config_include_files: []
 #  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
 
 # Databases.
-mysql_databases: []
-#   - name: example
-#     collation: utf8_general_ci
-#     encoding: utf8
-#     replicate: 1
+# mysql_databases: []
+# #   - name: example
+# #     collation: utf8_general_ci
+# #     encoding: utf8
+# #     replicate: 1
+
+
+mysql_databases:
+  - name: homestead
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: 1
 
 # Users.
-mysql_users: []
-#   - name: example
-#     host: 127.0.0.1
-#     password: secret
-#     priv: *.*:USAGE
+# mysql_users: []
+# #   - name: example
+# #     host: 127.0.0.1
+# #     password: secret
+# #     priv: *.*:USAGE
+
+mysql_users:
+  - name: webaccess
+    hosts: 0.0.0.0
+    password: sePret^i
+    priv: '*.*:ALL,GRANT'
+
+mysql_users:
+  - name: homestead
+    host: 172.31.5.226
+    password: sePret^i
+    priv: '*.*:ALL,GRANT'
+
 
 mysql_disable_log_bin: false
 
@@ -132,3 +155,8 @@ mysql_replication_master_inventory_host: "{{ mysql_replication_master }}"
 
 # Same keys as `mysql_users` above.
 mysql_replication_user: []
+
+
+
+## Users
+
