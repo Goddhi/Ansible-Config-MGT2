@@ -1,8 +1,12 @@
 
 ---
-- hosts: db
-- name: database assignment
-  import_playbook: ../static-assignments/database.yml
+ - hosts: todo
+ - name: deploy php todo app
+ - import_playbook: ../static-assignments/deployment.yml
+ 
+# - hosts: db
+# - name: database assignment
+#   import_playbook: ../static-assignments/database.yml
 
 # ---
 # - hosts: all
