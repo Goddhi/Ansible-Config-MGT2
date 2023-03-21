@@ -69,7 +69,7 @@
         force: yes
         remote_src: yes
 
-    - name: remove nginx default page
+    - name: remove apache default page
       ansible.builtin.file:
         path: /etc/httpd/conf.d/welcome.conf
         state: absent
